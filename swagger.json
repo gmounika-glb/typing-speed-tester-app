@@ -1,0 +1,448 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "version": "1.0.0",
+    "title": "Typing Speed Tester API",
+    "description": "API for managing users, test history, and typing speed."
+  },
+  "host": "localhost:5678",
+  "basePath": "/api",
+  "schemes": ["http"],
+  "securityDefinitions": {
+    "Bearer": {
+        "type": "apiKey",
+        "in": "header",
+        "name": "Authorization",
+        "description": "Enter your bearer token in the format 'Bearer <token>'."
+    }
+  },
+  "paths": {
+    "/auth/signup": {
+      "post": {
+        "summary": "Sign up a new user",
+        "description": "Create a new user account.",
+        "parameters": [
+          {
+            "name": "user",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/User"
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "User created successfully."
+          },
+          "400": {
+            "description": "Error in user creation."
+          }
+        }
+      }
+    },
+"/auth/login": {
+      "post": {
+        "summary": "Log in a user",
+        "description": "Authenticate a user and provide a JWT token.",
+        "parameters": [
+          {
+            "name": "credentials",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/LoginCredentials"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Login successful.",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "message": {
+                  "type": "string"
+                },
+                "token": {
+                  "type": "string"
+                }, "userId":{
+                  "type":"string"
+                },
+                "username":{
+                  "type":"string"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Invalid credentials."
+          },
+          "500": {
+            "description": "Internal server error."
+          }
+        }
+      }
+    },
+    "/auth/logout": {
+      "post": {
+        "summary": "User Logout and Account Deletion",
+        "description": "Logs out the user by invalidating their session and deletes their account.",
+        "parameters": [
+          {
+            "in": "body",
+            "name": "body",
+            "required": true,
+            "description": "Logout data",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "userId": {
+                  "type": "string",
+                  "example": "6789495945fc152a02d764d7"
+                }
+              },
+              "required": ["userId"]
+            }
+          },
+          {
+            "in": "header",
+            "name": "Authorization",
+            "required": true,
+            "type": "string",
+            "description": "Bearer token for authentication"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Logout successful and user account deleted.",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "message": {
+                  "type": "string"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid input."
+          },
+          "401": {
+            "description": "Unauthorized."
+          },
+          "404": {
+            "description": "User not found."
+          },
+          "500": {
+            "description": "Internal server error."
+          }
+        }
+      }
+    },
+    "/auth/deleteAccount/{userId}": {
+  "delete": {
+    "tags": ["User"],
+    "summary": "Deletes the user account permanently",
+    "description": "Deletes the authenticated user’s account and removes all their data from the database. Requires the user ID for confirmation and includes email and username in the response.",
+    "parameters": [
+      {
+        "name": "Authorization",
+        "in": "header",
+        "required": true,
+        "type": "string",
+        "description": "Bearer token."
+      },
+      {
+        "name": "userId",
+        "in": "header",
+        "required": true,
+        "description": "The ID of the user whose account is to be deleted",
+        "schema": {
+          "type": "string"
+        }
+      },
+      {
+        "name": "user",
+        "in": "body",
+        "required": true,
+        "schema": {
+          "$ref": "#/definitions/deleteAccountCredentials"
+        }
+      }
+    ],
+    "security": [
+      {
+        "Bearer": []
+      }
+    ],
+    "responses": {
+      "200": {
+        "description": "Account deleted successfully",
+        "content": {
+          "application/json": {
+            "schema": {
+              "type": "object",
+              "properties": {
+                "message": {
+                  "type": "string",
+                  "example": "Account deleted successfully"
+                },
+                "userId": {
+                  "type": "string",
+                  "example": "12345"
+                },
+                "email": {
+                  "type": "string",
+                  "example": "user@example.com"
+                },
+                "username": {
+                  "type": "string",
+                  "example": "username123"
+                }
+              }
+            }
+          }
+        }
+      },
+      "404": {
+        "description": "User not found",
+        "content": {
+          "application/json": {
+            "schema": {
+              "type": "object",
+              "properties": {
+                "message": {
+                  "type": "string",
+                  "example": "User not found"
+                }
+              }
+            }
+          }
+        }
+      },
+      "500": {
+        "description": "Internal server error",
+        "content": {
+          "application/json": {
+            "schema": {
+              "type": "object",
+              "properties": {
+                "message": {
+                  "type": "string",
+                  "example": "Internal server error"
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+},
+
+    "/history": {
+      "get": {
+        "summary": "Get user history",
+        "description": "Retrieve the test history for the authenticated user.",
+        "parameters": [
+          {
+            "name": "Authorization",
+            "in": "header",
+            "required": true,
+            "type": "string",
+            "description": "Bearer token."
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Test history retrieved successfully.",
+            "schema": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/HistoryEntry"
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized."
+          },
+          "500": {
+            "description": "Error retrieving history."
+          }
+        }
+      },
+      "post": {
+        "summary": "Add a test history entry",
+        "description": "Add a new test history entry for the authenticated user.",
+        "parameters": [
+          
+          {
+            "name": "historyEntry",
+            "in": "body",
+            "required": true,
+            "type": "string",
+            "description": "Bearer token.",
+            "schema": {
+              "$ref": "#/definitions/HistoryEntry"
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "History entry added successfully.",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "message": {
+                  "type": "string"
+                },
+                "historyId": {
+                  "type": "string"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Error adding history entry."
+          },
+          "401": {
+            "description": "Unauthorized."
+          }
+        },
+        "security": [
+          {
+            "Bearer": []
+          }
+        ]
+      }
+    },
+    "/history/{historyId}": {
+
+"delete": {
+        "summary": "Delete a test history entry",
+        "description": "Delete a specific test history entry for the authenticated user.",
+        "parameters": [
+          {
+            "name": "Authorization",
+            "in": "header",
+            "required": true,
+            "type": "string",
+            "description": "Bearer token."
+          },
+          {
+            "name": "historyId",
+            "in": "path",
+            "required": true,
+            "type": "string",
+            "description": "ID of the history entry to be deleted."
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "History entry deleted successfully."
+          },
+          "401": {
+            "description": "Unauthorized."
+          },
+          "404": {
+            "description": "History entry not found."
+          },
+          "500": {
+            "description": "Error deleting history entry."
+          }
+        },
+        "security": [
+          {
+            "Bearer": []
+          }
+        ]
+      }
+    }
+  },
+  "definitions": {
+    "User": {
+      "type": "object",
+      "properties": {
+        "username": {
+          "type": "string"
+        },
+        "email": {
+          "type": "string",
+          "format": "email"
+        },
+        "password": {
+          "type": "string",
+          "format": "password"
+        },
+        "confirmPassword": {
+          "type": "string",
+          "format": "password"
+        }
+      },
+      "required": ["username", "email", "password", "confirmPassword"]
+    },
+    "LoginCredentials": {
+      "type": "object",
+      "properties": {
+        "username": {
+          "type": "string"
+        },
+        "password": {
+          "type": "string",
+          "format": "password"
+        }
+      },
+      "required": ["username", "password"]
+    },
+        "deleteAccountCredentials": {
+      "type": "object",
+      "properties": {
+        "username": {
+          "type": "string"
+        },
+        "email": {
+          "type": "string",
+          "format": "email"
+        },
+        "password": {
+          "type": "string",
+          "format": "password"
+        }
+      },
+      "required": ["username", "email", "password"]
+    },
+    "HistoryEntry": {
+      "type": "object",
+      "properties": {
+        "userId":{
+          "type":"string"
+        },
+        "date": {
+          "type": "string",
+          "format": "date"
+        },
+        "time": {
+          "type": "string",
+          "format": "time"
+        },
+        "elapsedTime": {
+          "type": "integer",
+          "format": "int64",
+          "description": "Elapsed time in milliseconds."
+        },
+        "speed": {
+          "type": "integer",
+          "format": "int64",
+          "description": "Typing speed in words per minute."
+        },
+        "accuracy": {
+          "type": "integer",
+          "format": "int64",
+          "description": "Typing accuracy in percentage."
+        }
+      },
+      "required": ["date", "time", "elapsedTime", "speed", "accuracy"]
+    }
+  }
+}

@@ -1,0 +1,23 @@
+{
+  "name": "t-p-s",
+  "version": "1.0.0",
+  "description": "The Typing Speed Tester App is a web application that evaluates typing speed and accuracy by providing a text for users to type. It features authentication, performance tracking, and responsive design.",
+  "main": "app.js",
+  "scripts": {
+    "start": "nodemon app.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "bcrypt": "^5.1.1",
+    "body-parser": "^1.20.3",
+    "express": "^4.21.2",
+    "jsonwebtoken": "^9.0.2",
+    "mongoose": "^8.9.5",
+    "nodemon": "^3.1.9",
+    "swagger-ui-express": "^5.0.1",
+    "t-p-s": "file:"
+  }
+}

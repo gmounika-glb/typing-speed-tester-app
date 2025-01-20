@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Typing Speed Tester</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <link href="https://cdn.jsdelivr.net/npm/boxicons@2.1.2/css/boxicons.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+
+</head>
+<body>
+    <!-- Navbar -->
+    <nav class="navbar">
+        <div class="nav-heading">
+            <h1><i class="fas fa-keyboard"></i>Typing Speed Tester</h1>
+        </div>
+        <div class="hamburger" id="hamburger-icon" title="Menu">
+            <i class="fas fa-bars"></i>
+        </div>
+        <div class="nav-menu" id="nav-menu">
+            <div class="nav-item" title="Login" id="login-btn">
+                <i class="fas fa-sign-in-alt"></i> <span>Login</span>
+            </div>
+            <div class="nav-item" title="Sign-Up" id="signup-btn">
+                <i class="fas fa-user-plus"></i> <span>Sign-Up</span>
+            </div>
+            <div class="nav-item" id="mode-toggle" title="Mode Toggle">
+                <i class="fas fa-moon"></i> <span>Light Mode</span>
+            </div>
+            <div class="nav-item" id="logoutButton" title="Logout">
+                <i class="fas fa-sign-out-alt"></i> <span>Logout</span>
+            </div>
+            <div class="nav-item" id="delete-account-btn" title="Delete Account">
+                <i class="fas fa-user-times"></i> <span>Delete Account</span>
+            </div>
+            <div class="nav-item" title="History" id="history-btn">
+                <i class="fas fa-history"></i> <span>History</span>
+            </div>
+        </div>
+    </nav>
+    <!-- Sign-Up Modal -->
+    <div class="modal" id="signup-modal">
+        <div class="modal-content">
+            <span class="close-btn" id="signup-close" tabindex="0">&times;</span>
+            <form id="signup-form">
+                <h2>Sign-Up</h2>
+                <div class="form-inputs">
+                    <input type="text" id="signup-username" placeholder="Enter your username" required>
+                    <input type="email" id="signup-email" placeholder="Enter your email" required>
+                    <input type="password" id="signup-password" placeholder="Enter your password" required>
+                    <input type="password" id="signup-confirm-password" placeholder="Confirm your password" required>
+                </div>
+                <div class="form-button">
+                    <button type="submit">Sign Up</button>
+                </div>
+            </form>
+        </div>
+    </div>
+    <!-- Login Modal -->
+    <div class="modal" id="login-modal">
+        <div class="modal-content">
+            <div class="close-btn" id="login-close">&times;</div>
+            <form id="login-form">
+                <h2>Login</h2>
+                <div class="form-inputs">
+                    <input type="text" id="login-username" placeholder="Enter your username" required>
+                    <input type="password" id="login-password" placeholder="Enter your password" required>
+                </div>
+                <div class="form-button">
+                    <button type="submit">Login</button>
+                </div>
+            </form>
+        </div>
+    </div>
+    <!-- History Modal -->
+    <div class="modal" id="history-modal">
+        <div class="modal-content">
+            <div class="close-btn" id="history-close">&times;</div>
+            <div class="history-container">
+            <h2>History</h2>
+            <ul id="history-list">                
+                <!-- History items will be appended dynamically -->
+            </ul>
+        </div>
+        </div>
+    </div>
+    <!-- Delete Account Modal -->
+    <div class="modal" id="delete-account-modal">
+        <div class="modal-content">
+            <div class="close-btn" id="delete-account-close">&times;</div>
+            <form id="delete-account-form">
+                <h2>Login</h2>
+                <div class="form-inputs">
+                    <input type="text" id="delete-account-username" placeholder="Enter your username" required>
+                    <input type="email" id="delete-account-email" placeholder="Enter your email" required>
+                    <input type="password" id="delete-account-password" placeholder="Enter your password" required>
+                </div>
+                <div class="form-button">
+                    <button type="submit">Delete Account</button>
+                </div>
+            </form>
+        </div>
+    </div>
+    <!-- Main Section -->
+    <main class="main">
+        <div class="typing-section">
+            <div class="welcome-quotes">
+            </div>
+            <div class="test-text">
+                <p id="display-text">Click "Start" to begin the test!</p>
+            </div>
+            <textarea id="user-input" placeholder="Start typing here..." disabled></textarea>
+            <div class="controls">
+                   <section id="level-section">
+                    <label for="difficulty-select">Select Difficulty:</label>
+                    <select id="difficulty-select" title="Choose a difficulty level">
+                        <option value="" disabled selected>Select</option>
+                        <option value="easy" >Easy</option>
+                        <option value="medium">Medium</option>
+                        <option value="hard">Hard</option>
+                    </select>
+                </section>
+                <button id="start-btn">Start</button>
+                <button id="reset-btn">Reset</button>
+            </div>
+            <div class="results">
+                <p><span class="result-heading">Speed: </span><span class="result-value" id="speed">0</span><span class="result-heading"> WPM</span></p>
+                <p><span class="result-heading">Accuracy: </span><span class="result-value" id="accuracy">0</span><span class="result-heading"> %</span></p>
+                <p><span class="result-heading">Timer: </span><span class="result-value" id="timer">0</span> <span class="result-heading"> Seconds</span></p>
+            </div>
+        </div>
+    </main>
+    <!-- Footer Section -->
+    <footer class="footer">
+        <p>&copy; 2024-2025 Typing Speed Tester App. All rights reserved. | <a href="https://github.com/gmounika-glb">Mounika G</a>
+    </footer>
+    <!-- <script src="./api.js"></script> -->
+    <script defer src="script.js"></script>
+</body>
+</html>
