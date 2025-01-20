@@ -29,9 +29,3 @@ The Typing Speed Tester App is a web application that evaluates typing speed and
 1. Create an account or log in.
 2. Start a typing test and monitor your performance.
 3. View saved test results and typing statistics.
-
----
-
-## License
-
-This project is licensed under the MIT License. Feel free to use, modify, and distribute the code.
